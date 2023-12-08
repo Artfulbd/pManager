@@ -37,7 +37,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   device_apps: ^2.2.0
   fluttertoast: ^8.2.4
-  installed_apps: ^1.4.0
   intl: ^0.18.1
 
 dev_dependencies:

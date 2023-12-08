@@ -47,18 +47,6 @@ class MainActivity: FlutterActivity() {
         }
     }
 
-    private fun tellMeBatteryLevel(): Int {
-        val batteryLevel: Int
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            val batteryManager = getSystemService(Context.BATTERY_SERVICE) as BatteryManager
-            batteryLevel = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
-        } else {
-            val intent = ContextWrapper(applicationContext).registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-            batteryLevel = intent!!.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) * 100 / intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
-        }
-
-        return batteryLevel
-    }
 
     private fun checkPermissionsForApp(context: Context, packageName: String): MutableList<String> {
         val grantedPermissions = mutableListOf<String>()
@@ -73,12 +61,10 @@ class MainActivity: FlutterActivity() {
                 for (permission: String in packageInfo.requestedPermissions) {
                     try {
                         val permissionInfo: PermissionInfo = pm.getPermissionInfo(permission, 0)
-                        //Log.d("PermissionChecker", "Permission: ${permissionInfo.name}")
                         // Check if the permission is granted
                         val permissionStatus = pm.checkPermission(permission, packageName)
                         if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
                             grantedPermissions.add(permissionInfo.name)
-                            //Log.d("PermissionChecker", "Granted Permission: ${permissionInfo.name}")
                         }
                     } catch (e: PackageManager.NameNotFoundException) {
                         //e.printStackTrace()

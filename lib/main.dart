@@ -47,11 +47,12 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     permissions.add(PermissionInfo("Contacts", Icons.contact_mail_outlined, "This permission allows an app to read the user's contact data", "CONTACTS", []));
     permissions.add(PermissionInfo("Approximate Location", Icons.pin_drop_sharp, "This permission allows an app to access approximate location information.", "COARSE_LOCATION", []));
     permissions.add(PermissionInfo("Accurate location", Icons.location_pin, "This permission allows an app to access precise location information using GPS ", "FINE_LOCATION", []));
+    permissions.add(PermissionInfo("Background location", Icons.gps_fixed, "This permission allows an app to access device location from background.", "BACKGROUND_LOCATION", []));
     permissions.add(PermissionInfo("Microphone", Icons.mic, "This permission allows an app to access the device's microphone and record audio.", "D_AUDIO", []));
     permissions.add(PermissionInfo("Telephone", Icons.add_call, "This permission allows an app to directly initiate a phone call without the user having to confirm the call.", "CALL_PHONE", []));
     permissions.add(PermissionInfo("Biometric", Icons.fingerprint_rounded, "This permission allows an app to access the device's fingerprint sensor for authentication purposes.", "USE_BIOMETRIC", []));
     permissions.add(PermissionInfo("Read SMS", Icons.sms, "This permission allows an app to read SMS messages stored on the device.", "READ_SMS", []));
-    permissions.add(PermissionInfo("Receive ",Icons.sms_failed_rounded, "This permission allows an app to receive SMS messages.", "RECEIVE_SMS", []));
+    permissions.add(PermissionInfo("Receive SMS",Icons.sms_failed_rounded, "This permission allows an app to receive SMS messages.", "RECEIVE_SMS", []));
     permissions.add(PermissionInfo("Internet access", Icons.language_sharp, "This permission allows an app to open network sockets and send/receive data over the internet.", "INTERNET", []));
     permissions.add(PermissionInfo("WiFi info",Icons.wifi, "This permission allows an app to view information about the device's Wi-Fi connectivity.", "WIFI", []));
     permissions.add(PermissionInfo("Other apps info",Icons.app_settings_alt ,"This permission allows an app to query other normal app on the device, regardless of manifest declarations.", "QUERY_ALL_PACKAGES", []));
@@ -70,6 +71,9 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     permissions.add(PermissionInfo("VPN control",Icons.vpn_lock_outlined, "This is a system-level permission that allows an app to control Device's VPN connection.", "CONTROL_VPN", []));
     permissions.add(PermissionInfo("Calender",Icons.calendar_month, "This permission allows an app to read the user's calendar data including events, appointments.", "READ_CALENDAR", []));
     permissions.add(PermissionInfo("Media data",Icons.play_arrow, "This permission allows an app to access from external storage. This includes reading media files such as audio, video, and images.", "MEDIA", []));
+
+    // sorting by name
+    permissions.sort((PermissionInfo a, PermissionInfo b)=>a.name.compareTo(b.name));
   }
 
   List<PermissionInfo> listPermissions(List<AppInfo> allApps, List<PermissionInfo> permissions){
@@ -131,9 +135,11 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
       */
 
       permission_list = await _getPermissionList(app.packageName);
+
       //print(app.systemApp);
       allApps.add(AppInfo(app.appName, app.versionName!, app.packageName, dt, app.systemApp, permission_list));
     }
+    allApps.sort((AppInfo a, AppInfo b)=>a.name.compareTo(b.name));
     setState(() {});
   }
 
@@ -649,10 +655,22 @@ class PermissionAppsPage extends StatelessWidget {
                     elevation: 5,
                     margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: ListTile(
-                      title: Text(
-                        permissionInfo.apps[index].name,
-                        style: const TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold),
+                      title: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Text(
+                            permissionInfo.apps[index].name,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          if (permissionInfo.apps[index].is_system_app)
+                            const Text(
+                              ' (system)',
+                              style: TextStyle(color: Colors.black38, fontSize: 10.0),
+                            ),
+                        ],
                       ),
                       onTap: () {
                         // Add your onTap logic here

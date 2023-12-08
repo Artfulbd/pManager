@@ -1,16 +1,9 @@
-# pmanager
+# pManager
 
-Permission manager application
 
-## Getting Started
+Permission manager application (Android).
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* Functions as a sophisticated permission manager, unlike Android's default permission management.
+* Developed as a course project (INSE6120).
+* While Android typically conceals certain permissions by default, this app ensures transparency by revealing and effectively managing them.
+* Dart and Kotlin
